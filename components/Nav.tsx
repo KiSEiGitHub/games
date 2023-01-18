@@ -35,7 +35,7 @@ function Nav() {
       mx="auto"
       alignItems="center"
       justifyContent="space-between"
-      px="75px"
+      px="70px"
     >
       <Flex gap={10} justifyContent="center">
         <ItemNav icon={<RiComputerLine fontSize="1.2em" />}>PC</ItemNav>

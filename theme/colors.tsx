@@ -1,4 +1,18 @@
 export const colors = {
-  dark: {},
-  light: {},
+  dark: {
+    primary: "#161616",
+    secondary: "#202020",
+    text: {
+      primary: "#ffffff",
+      secondary: "#b5b5b4",
+    },
+  },
+  light: {
+    primary: "#ffffff",
+    secondary: "#e9eef2",
+    text: {
+      primary: "#000",
+      secondary: "#000",
+    },
+  },
 };

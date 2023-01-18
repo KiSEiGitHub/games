@@ -1,12 +1,15 @@
-import { Heading } from "@chakra-ui/react";
-import React from "react";
+import { getServerSideProps } from "./api/hello";
 
-function Home() {
+function Home({ games }: any) {
+  const { results } = games;
+  console.log(results);
+
   return (
     <div>
-      <Heading variant="Main">Tom</Heading>
+
     </div>
   );
-}
+} 
 
 export default Home;
+export { getServerSideProps };

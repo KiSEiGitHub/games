@@ -1,7 +1,7 @@
 import { mode } from "@chakra-ui/theme-tools";
-import {colors} from './colors'
+import { colors } from "./colors";
 
-const {light, dark} = colors
+const { light, dark } = colors;
 
 export const styles = {
   global: (props: any) => ({

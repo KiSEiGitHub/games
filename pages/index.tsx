@@ -1,3 +1,4 @@
+import { Heading } from "@chakra-ui/react";
 import { getServerSideProps } from "./api/hello";
 
 function Home({ games }: any) {
@@ -6,7 +7,7 @@ function Home({ games }: any) {
 
   return (
     <div>
-
+<Heading>ok</Heading>
     </div>
   );
 } 

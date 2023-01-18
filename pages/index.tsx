@@ -7,10 +7,10 @@ function Home({ games }: any) {
 
   return (
     <div>
-<Heading>ok</Heading>
+      <Heading size='2xl'>ok</Heading>
     </div>
   );
-} 
+}
 
 export default Home;
 export { getServerSideProps };

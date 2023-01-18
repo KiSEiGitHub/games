@@ -1,4 +1,5 @@
 export const config = {
-    initialColorMode: 'dark',
-    useSystemColorMode: true
-}
+  initialColorMode: "dark",
+  useSystemColorMode: true,
+  disableTransitionOnChange: false, // smooth tohhleScheme
+};

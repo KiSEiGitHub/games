@@ -5,8 +5,8 @@ import { config } from "./config";
 import { styles } from "./styles";
 
 export const theme = extendTheme({
+  styles,
   components,
   colors,
-  styles,
   config,
 });

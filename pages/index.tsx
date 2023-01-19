@@ -1,16 +1,16 @@
 import Cards from "@/components/Cards";
 import { Title } from "@/typographie/typo";
-import { Box, Button, Container, Flex, Link } from "@chakra-ui/react";
+import { Box, Button, Container, Flex, Heading, Link } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 function Home() {
-   const [page, setPage] = useState(1);
-   const [game, setGame] = useState([]);
-   const [Loading, setLoading] = useState(true);
+   const [page, setPage] = useState<number>(1);
+   const [game, setGame] = useState<Array<any>>([]);
+   const [Loading, setLoading] = useState<boolean>(true);
 
    const getGames = async () => {
+      setLoading(true)
       window.scrollTo(0, 0);
-      setPage(page + 1)
       const res = await fetch(
          `https://api.rawg.io/api/games?key=${process.env.NEXT_PUBLIC_API_KEY}&page=${page}`
       );
@@ -23,10 +23,16 @@ function Home() {
    console.log(game);
 
    useEffect(() => {
-      if (Loading) {
-         getGames();
-      }
+      getGames();
    }, [page]);
+
+   if (Loading) {
+      return (
+         <>
+            <Heading>Chargement</Heading>
+         </>
+      );
+   }
 
    return (
       <Container maxW="7xl" mt={10}>
@@ -44,8 +50,13 @@ function Home() {
             ))}
          </Flex>
 
-         <Button mx="auto" onClick={() => getGames()}>
-            More
+         <Button
+            mx="auto"
+            my={5}
+            display="block"
+            onClick={() => setPage(page + 1)}
+         >
+            Load more
          </Button>
       </Container>
    );

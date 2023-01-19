@@ -1,5 +1,6 @@
 import { Paragraphe, Title } from "@/typographie/typo";
 import {
+   AspectRatio,
    Box,
    Container,
    Divider,
@@ -14,10 +15,13 @@ import {
    useColorModeValue,
 } from "@chakra-ui/react";
 import { GoFlame } from "react-icons/go";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import { Autoplay, Pagination, Navigation } from "swiper";
 
-function oneGame({ game }: any) {
-   console.log(game);
-
+function oneGame({ game, trailers, screen }: any) {
    return (
       <>
          <Box
@@ -52,7 +56,7 @@ function oneGame({ game }: any) {
                   backdropFilter="blur(10px)"
                   p={3}
                >
-                  <Title textAlign="center" mb={3} mt={3}>
+                  <Title textAlign="center" color="#fff" mb={3} mt={3}>
                      {game.name}
                   </Title>
                   <HStack
@@ -75,7 +79,7 @@ function oneGame({ game }: any) {
 
                   <HStack mt={4} justifyContent="center">
                      <GoFlame color="red" fontSize="1.3em" />
-                     <Text textAlign="center">
+                     <Text textAlign="center" color="#fff">
                         {game["reviews_count"]} users in this page
                      </Text>
                   </HStack>
@@ -153,13 +157,50 @@ function oneGame({ game }: any) {
                   </HStack>
                </GridItem>
                <GridItem colStart={1} colEnd={3} rowStart={3}>
-                  <Title>Visuels</Title>
-                  <Image
-                     src={game["background_image_additional"]}
-                     alt="ok"
-                     w="100%"
-                     objectFit="cover"
-                  />
+                  <Title mb={4}>Visuels</Title>
+                  {trailers.results.length > 1 && (
+                     <AspectRatio
+                        maxW="100%"
+                        h="500px"
+                        ratio={16 / 9}
+                        borderRadius="lg"
+                     >
+                        <iframe
+                           src={trailers.results[0].data.max}
+                           style={{ objectFit: "cover" }}
+                           allowFullScreen
+                           width="100%"
+                        />
+                     </AspectRatio>
+                  )}
+
+                  <Box mt={5}>
+                     <Swiper
+                        spaceBetween={30}
+                        centeredSlides={true}
+                        autoplay={{
+                           delay: 2500,
+                           disableOnInteraction: false,
+                        }}
+                        pagination={{
+                           clickable: true,
+                        }}
+                        navigation={true}
+                        modules={[Autoplay, Pagination, Navigation]}
+                        className="mySwiper"
+                     >
+                        {screen.results.map((item: any, key: number) => (
+                           <SwiperSlide key={key}>
+                              <Image
+                                 key={key}
+                                 src={item.image}
+                                 alt="ok"
+                                 borderRadius="lg"
+                              />
+                           </SwiperSlide>
+                        ))}
+                     </Swiper>
+                  </Box>
                </GridItem>
             </Grid>
          </Container>
@@ -178,7 +219,23 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
    );
    const data = await res.json();
 
+   // trailers
+   const resT = await fetch(
+      `https://api.rawg.io/api/games/${id}/movies?key=${process.env.NEXT_PUBLIC_API_KEY}`
+   );
+   const dataT = await resT.json();
+
+   // additionnal screenshot
+   const resS = await fetch(
+      `https://api.rawg.io/api/games/${id}/screenshots?key=${process.env.NEXT_PUBLIC_API_KEY}`
+   );
+   const dataS = await resS.json();
+
    return {
-      props: { game: data },
+      props: {
+         game: data,
+         trailers: dataT,
+         screen: dataS,
+      },
    };
 };

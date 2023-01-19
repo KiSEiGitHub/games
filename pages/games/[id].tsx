@@ -23,7 +23,7 @@ import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Layout from "@/components/Layout";
 
-function oneGame({ game, trailers, screen, achvievement, dlc }: any) {
+function oneGame({ game, trailers, screen, achvievement, dlc, similar }: any) {
    console.log(dlc);
 
    return (
@@ -242,10 +242,28 @@ function oneGame({ game, trailers, screen, achvievement, dlc }: any) {
                </GridItem>
                <GridItem colStart={1} colEnd={3}>
                   <Title>DLCs</Title>
-                  <Flex flexWrap='wrap' gap={5} mt={3}>
+                  <Flex flexWrap="wrap" gap={5} mt={3}>
                      {dlc.results.map((item: any, key: number) => (
                         <Box key={key}>
-                           <Cards name={item.name} img={item['background_image']}/>
+                           <Cards
+                              name={item.name}
+                              img={item["background_image"]}
+                           />
+                        </Box>
+                     ))}
+                  </Flex>
+               </GridItem>
+               <GridItem colStart={1} colEnd={3}>
+                  <Title>Their other games</Title>
+                  <Flex flexWrap="wrap" gap={5} mt={3}>
+                     {similar.results.map((item: any, key: number) => (
+                        <Box key={key}>
+                           <Link href={`/games/${item.id}`}>
+                              <Cards
+                                 name={item.name}
+                                 img={item["background_image"]}
+                              />
+                           </Link>
                         </Box>
                      ))}
                   </Flex>
@@ -291,6 +309,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
    );
    const dataDlc = await resDlc.json();
 
+   // similar games
+   const resSim = await fetch(
+      `https://api.rawg.io/api/games/${id}/game-series?key=${process.env.NEXT_PUBLIC_API_KEY}`
+   );
+   const dataSim = await resSim.json();
+
    return {
       props: {
          game: data,
@@ -298,6 +322,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
          screen: dataS,
          achvievement: dataAc,
          dlc: dataDlc,
+         similar: dataSim,
       },
    };
 };

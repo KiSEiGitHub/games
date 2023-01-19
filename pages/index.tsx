@@ -1,17 +1,38 @@
 import Cards from "@/components/Cards";
 import { Title } from "@/typographie/typo";
-import { Box, Container, Flex, Link } from "@chakra-ui/react";
-import { getServerSideProps } from "./api/hello";
+import { Box, Button, Container, Flex, Link } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 
-function Home({ games }: any) {
-   const { results } = games;
-   console.log(results);
+function Home() {
+   const [page, setPage] = useState(1);
+   const [game, setGame] = useState([]);
+   const [Loading, setLoading] = useState(true);
+
+   const getGames = async () => {
+      window.scrollTo(0, 0);
+      setPage(page + 1)
+      const res = await fetch(
+         `https://api.rawg.io/api/games?key=${process.env.NEXT_PUBLIC_API_KEY}&page=${page}`
+      );
+      const { results } = await res.json();
+
+      setGame(results);
+      setLoading(false);
+   };
+
+   console.log(game);
+
+   useEffect(() => {
+      if (Loading) {
+         getGames();
+      }
+   }, [page]);
 
    return (
       <Container maxW="7xl" mt={10}>
          <Title mb={3}>Tendances</Title>
          <Flex flexWrap="wrap" gap={5} mb={3}>
-            {results.map((item: any, key: number) => (
+            {game.map((item: any, key: number) => (
                <Box key={key}>
                   <Link
                      href={`/games/${item.id}`}
@@ -22,9 +43,12 @@ function Home({ games }: any) {
                </Box>
             ))}
          </Flex>
+
+         <Button mx="auto" onClick={() => getGames()}>
+            More
+         </Button>
       </Container>
    );
 }
 
 export default Home;
-export { getServerSideProps };

@@ -25,6 +25,7 @@ function oneGame({ game }: any) {
             bgImage={game["background_image"]}
             bgAttachment="fixed"
             bgSize="cover"
+            bgPos="center"
             bgRepeat="no-repeat"
             h="550px"
             mt={3}
@@ -151,9 +152,14 @@ function oneGame({ game }: any) {
                      ))}
                   </HStack>
                </GridItem>
-               <GridItem colStart={1} colEnd={3} rowStart={3} >
+               <GridItem colStart={1} colEnd={3} rowStart={3}>
                   <Title>Visuels</Title>
-                  <Image src={game["background_image_additional"]} alt="ok" w='100%' objectFit='cover'/>
+                  <Image
+                     src={game["background_image_additional"]}
+                     alt="ok"
+                     w="100%"
+                     objectFit="cover"
+                  />
                </GridItem>
             </Grid>
          </Container>

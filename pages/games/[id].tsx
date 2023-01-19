@@ -12,16 +12,19 @@ import {
    Link,
    Tag,
    Text,
+   Tooltip,
    useColorModeValue,
 } from "@chakra-ui/react";
 import { GoFlame } from "react-icons/go";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Navigation, Pagination } from "swiper";
 import "swiper/css";
-import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { Autoplay, Pagination, Navigation } from "swiper";
+import "swiper/css/pagination";
+import { Swiper, SwiperSlide } from "swiper/react";
 
-function oneGame({ game, trailers, screen }: any) {
+function oneGame({ game, trailers, screen, achvievement }: any) {
+   console.log(game);
+
    return (
       <>
          <Box
@@ -41,6 +44,7 @@ function oneGame({ game, trailers, screen }: any) {
                templateColumns="repeat(2, 1fr)"
                templateRows="auto 1fr auto"
                gap={10}
+               mb={10}
             >
                <GridItem colStart={1} rowStart={1}>
                   <Image
@@ -201,6 +205,39 @@ function oneGame({ game, trailers, screen }: any) {
                         ))}
                      </Swiper>
                   </Box>
+                  <Box mt={10}>
+                     <Title id="#more">Description</Title>
+                     <Paragraphe mt={3} textAlign="justify">
+                        {game["description_raw"]}
+                     </Paragraphe>
+                  </Box>
+               </GridItem>
+               <GridItem>
+                  <Title>Configuration minimal</Title>
+                  <Paragraphe mt={3} textAlign="justify">
+                     {game.platforms[0].requirements.minimum}
+                  </Paragraphe>
+               </GridItem>
+               <GridItem>
+                  <Title>Configuration recommended</Title>
+                  <Paragraphe mt={3} textAlign="justify">
+                     {game.platforms[0].requirements.recommended}
+                  </Paragraphe>
+               </GridItem>
+               <GridItem colStart={1} colEnd={3}>
+                  <Title>Achievements</Title>
+                  <Flex flexWrap="wrap" gap={5} mt={3}>
+                     {achvievement.results.map((item: any, key: number) => (
+                        <Tooltip key={key} label={item.name} placement='top'>
+                           <Image
+                              src={item.image}
+                              borderRadius="lg"
+                              alt="ok"
+                              w="190px"
+                           />
+                        </Tooltip>
+                     ))}
+                  </Flex>
                </GridItem>
             </Grid>
          </Container>
@@ -231,11 +268,17 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
    );
    const dataS = await resS.json();
 
+   const resAc = await fetch(
+      `https://api.rawg.io/api/games/${id}/achievements?key=${process.env.NEXT_PUBLIC_API_KEY}`
+   );
+   const dataAc = await resAc.json();
+
    return {
       props: {
          game: data,
          trailers: dataT,
          screen: dataS,
+         achvievement: dataAc,
       },
    };
 };

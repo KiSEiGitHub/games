@@ -11,8 +11,19 @@ export const components = {
         variants: {
             title: (props: any) => ({
                 fontSize: "27px",
-                colors: mode(light.text.primary, dark.text.primary)(props),
+                color: mode(light.text.primary, dark.text.primary)(props),
             }),
         },
     },
+
+    Text: {
+        baseStyle: {
+            fontFamily: "Poppins",
+        },
+        variants: {
+            paragraphe: (props: any) => ({
+                color: mode(light.text.secondary, dark.text.secondary)(props),
+            })
+        }
+    }
 };

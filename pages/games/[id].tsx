@@ -21,12 +21,13 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
+import Layout from "@/components/Layout";
 
 function oneGame({ game, trailers, screen, achvievement }: any) {
    console.log(game);
 
    return (
-      <>
+      <Layout title={game.name}>
          <Box
             maxW="100%"
             bgImage={game["background_image"]}
@@ -241,7 +242,7 @@ function oneGame({ game, trailers, screen, achvievement }: any) {
                </GridItem>
             </Grid>
          </Container>
-      </>
+      </Layout>
    );
 }
 

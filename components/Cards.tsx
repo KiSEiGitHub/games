@@ -5,7 +5,7 @@ function Cards({ name, img }: cards) {
     return (
         <Box
             w="380px"
-            h="240px"
+            h="auto"
             bg={useColorModeValue("light.secondary", "dark.secondary")}
             borderRadius="2xl"
             boxShadow="xl"
@@ -23,7 +23,7 @@ function Cards({ name, img }: cards) {
                 w="100%"
             />
             <HStack justifyContent="center" px={3} mt={3}>
-                <Text>{name}</Text>
+                <Text mb={3}>{name}</Text>
             </HStack>
         </Box>
     );

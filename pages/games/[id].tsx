@@ -23,8 +23,8 @@ import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Layout from "@/components/Layout";
 
-function oneGame({ game, trailers, screen, achvievement }: any) {
-   console.log(game);
+function oneGame({ game, trailers, screen, achvievement, dlc }: any) {
+   console.log(dlc);
 
    return (
       <Layout title={game.name}>
@@ -229,7 +229,7 @@ function oneGame({ game, trailers, screen, achvievement }: any) {
                   <Title>Achievements</Title>
                   <Flex flexWrap="wrap" gap={5} mt={3}>
                      {achvievement.results.map((item: any, key: number) => (
-                        <Tooltip key={key} label={item.name} placement='top'>
+                        <Tooltip key={key} label={item.name} placement="top">
                            <Image
                               src={item.image}
                               borderRadius="lg"
@@ -237,6 +237,16 @@ function oneGame({ game, trailers, screen, achvievement }: any) {
                               w="190px"
                            />
                         </Tooltip>
+                     ))}
+                  </Flex>
+               </GridItem>
+               <GridItem colStart={1} colEnd={3}>
+                  <Title>DLCs</Title>
+                  <Flex flexWrap='wrap' gap={5} mt={3}>
+                     {dlc.results.map((item: any, key: number) => (
+                        <Box key={key}>
+                           <Cards name={item.name} img={item['background_image']}/>
+                        </Box>
                      ))}
                   </Flex>
                </GridItem>
@@ -249,6 +259,7 @@ function oneGame({ game, trailers, screen, achvievement }: any) {
 export default oneGame;
 
 import { GetServerSideProps } from "next";
+import Cards from "@/components/Cards";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
    const { id } = ctx.query;
@@ -274,12 +285,19 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
    );
    const dataAc = await resAc.json();
 
+   // dlc
+   const resDlc = await fetch(
+      `https://api.rawg.io/api/games/${id}/additions?key=${process.env.NEXT_PUBLIC_API_KEY}`
+   );
+   const dataDlc = await resDlc.json();
+
    return {
       props: {
          game: data,
          trailers: dataT,
          screen: dataS,
          achvievement: dataAc,
+         dlc: dataDlc,
       },
    };
 };

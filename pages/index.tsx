@@ -9,7 +9,7 @@ function Home() {
    const [Loading, setLoading] = useState<boolean>(true);
 
    const getGames = async () => {
-      setLoading(true)
+      setLoading(true);
       window.scrollTo(0, 0);
       const res = await fetch(
          `https://api.rawg.io/api/games?key=${process.env.NEXT_PUBLIC_API_KEY}&page=${page}`
